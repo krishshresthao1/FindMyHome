@@ -1,0 +1,1 @@
+from app.database.mongodb import property_collection
