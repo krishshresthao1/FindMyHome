@@ -10,7 +10,7 @@ router = APIRouter(
     tags=["Properties"]
 )
 
-@router.get("/getProperty")
+@router.get("/")
 def get_properties():
     properties = list(property_collection.find())
 
@@ -48,11 +48,11 @@ def post_property(
     property_data["owner_name"] = current_user["fullname"]
     property_data["owner_email"] = current_user["email"]
 
-    property_collection.insert_one(property_data)
+    result = property_collection.insert_one(property_data)
 
     return {
         "message": "Property added successfully",
-        "property": property_data
+        "property_id": str(result.inserted_id)
     }
 
 @router.put("/updateProperty/{property_id}")

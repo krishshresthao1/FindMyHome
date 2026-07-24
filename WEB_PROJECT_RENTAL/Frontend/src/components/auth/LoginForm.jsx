@@ -8,6 +8,11 @@ import { IoEye, IoEyeOff } from "react-icons/io5";
 
 import { loginUser } from "../../services/api";
 
+import { toast } from "react-toastify";
+
+import { GoogleLogin } from "@react-oauth/google";
+import { googleLogin } from "../../services/api";
+
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -33,22 +38,31 @@ const LoginForm = () => {
 
       console.log("Login Successful:", response.data);
 
-      alert("Login Successful!");
+      // Save JWT token
+      localStorage.setItem("token", response.data.access_token);
+
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      toast.success("Login successful!");
+
       navigate("/home");
     } catch (error) {
       console.error(error);
 
-      alert(
-        error.response?.data?.detail || "Invalid email or password."
-      );
+      const detail = error.response?.data?.detail;
+
+      if (Array.isArray(detail)) {
+        toast.error(detail.map((err) => err.msg).join(", "));
+      } else {
+        toast.error(
+          detail || error.response?.data?.message || "Wrong email or password",
+        );
+      }
     }
   };
 
   return (
-    <AuthLayout
-      title="Welcome Back!!"
-      subtitle="Sign in to continue."
-    >
+    <AuthLayout title="Welcome Back!!" subtitle="Sign in to continue.">
       <form className="space-y-5" onSubmit={handleSubmit}>
         <div>
           <label className="mb-2 block font-medium">Email</label>
@@ -112,20 +126,43 @@ const LoginForm = () => {
           Sign In
         </button>
 
-        <button
-          type="button"
-          className="flex w-full items-center justify-center gap-3 rounded-xl border p-4 hover:bg-gray-50"
-        >
-          <FaGoogle />
-          Continue with Google
-        </button>
+        <div className="flex justify-center">
+          <GoogleLogin
+            onSuccess={async (credentialResponse) => {
+              try {
+                const response = await googleLogin(
+                  credentialResponse.credential,
+                );
+
+                localStorage.setItem("token", response.data.access_token);
+
+                localStorage.setItem(
+                  "user",
+                  JSON.stringify(response.data.user),
+                );
+
+                toast.success("Google login successful!");
+
+                navigate("/home");
+              } catch (error) {
+                if (error.response?.status === 404) {
+                  toast.info("Account not found. Please register first.");
+
+                  navigate("/register");
+                } else {
+                  toast.error("Google login failed");
+                }
+              }
+            }}
+            onError={() => {
+              toast.error("Google login failed");
+            }}
+          />
+        </div>
 
         <p className="text-center">
           Don't have an account?
-          <Link
-            className="ml-2 font-semibold text-blue-600"
-            to="/register"
-          >
+          <Link className="ml-2 font-semibold text-blue-600" to="/register">
             Register
           </Link>
         </p>

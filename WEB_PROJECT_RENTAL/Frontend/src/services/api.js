@@ -18,13 +18,19 @@ export const loginUser = (userData) => {
   return api.post("/auth/login", userData);
 };
 
+export const googleLogin = (credential) => {
+  return api.post("/auth/google", {
+    credential,
+  });
+};
+
 /* ===========================
    Property APIs
 =========================== */
 
 // Add Property
 export const postProperty = (propertyData, token) => {
-  return api.post("/properties/postProperty", propertyData, {
+  return api.post("/properties/", propertyData, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -33,7 +39,7 @@ export const postProperty = (propertyData, token) => {
 
 // Get All Properties
 export const getProperties = () => {
-  return api.get("/properties/getProperty");
+  return api.get("/properties/");
 };
 
 // Get Single Property
@@ -58,3 +64,14 @@ export const deleteProperty = (id, token) => {
     },
   });
 };
+
+// Verify Email
+export const verifyEmail = (data) => api.post("/auth/verify-email", data);
+
+// Resend otp
+export const resendOtp = (email) =>
+  api.post("/auth/resend-otp", null, {
+    params: {
+      email,
+    },
+  });

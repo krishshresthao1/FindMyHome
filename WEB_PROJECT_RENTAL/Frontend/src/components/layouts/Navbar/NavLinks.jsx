@@ -1,21 +1,55 @@
 import { NavLink } from "react-router-dom";
-
-const navigation = [
-  {
-    name: "Home",
-    path: "/home",
-  },
-  {
-    name: "Browse",
-    path: "/search",
-  },
-  {
-    name: "Categories",
-    path: "/categories",
-  },
-];
+import { useState, useEffect } from "react";
 
 const NavLinks = () => {
+  const getUser = () => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser || storedUser === "undefined") {
+      return null;
+    }
+
+    return JSON.parse(storedUser);
+  };
+
+  const [user, setUser] = useState(getUser());
+
+  useEffect(() => {
+    const updateUser = () => {
+      setUser(JSON.parse(localStorage.getItem("user") || "null"));
+    };
+
+    window.addEventListener("storage", updateUser);
+
+    return () => {
+      window.removeEventListener("storage", updateUser);
+    };
+  }, []);
+
+  const navigation = [
+    {
+      name: "Home",
+      path: "/home",
+    },
+    {
+      name: "Browse",
+      path: "/search",
+    },
+    {
+      name: "Categories",
+      path: "/categories",
+    },
+
+    ...(user?.role === "owner"
+      ? [
+          {
+            name: "Post Property",
+            path: "/add-property",
+          },
+        ]
+      : []),
+  ];
+
   return (
     <nav className="hidden items-center gap-10 lg:flex">
       {navigation.map((item) => (

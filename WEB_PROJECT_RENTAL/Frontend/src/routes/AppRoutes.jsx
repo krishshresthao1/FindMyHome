@@ -12,6 +12,10 @@ import Saved from "../pages/Saved";
 import Profile from "../pages/Profile";
 import AddProperty from "../pages/AddProperty";
 
+import { ToastContainer } from "react-toastify";
+
+import VerifyEmail from "../pages/VerifyEmail";
+
 const AppRoutes = () => {
   return (
     <BrowserRouter>
@@ -20,6 +24,7 @@ const AppRoutes = () => {
         <Route element={<AuthLayout />}>
           <Route path="/" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
         </Route>
 
         {/* Main Website (With Navbar/Footer) */}
@@ -32,6 +37,15 @@ const AppRoutes = () => {
           <Route path="/add-property" element={<AddProperty />} />
         </Route>
       </Routes>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        pauseOnHover
+        theme="colored"
+      />
     </BrowserRouter>
   );
 };

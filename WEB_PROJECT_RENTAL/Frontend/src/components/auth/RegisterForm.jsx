@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
 import { registerUser } from "../../services/api";
 
+import { toast } from "react-toastify";
+
 import {
   FaUser,
   FaEnvelope,
@@ -20,6 +22,8 @@ const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const [registerData, setRegisterData] = useState({
@@ -31,20 +35,64 @@ const RegisterForm = () => {
     role: "tenant",
   });
 
+  const [errors, setErrors] = useState({});
+
   const handleChange = (e) => {
-    setRegisterData({
-      ...registerData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    setRegisterData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: "",
+    }));
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+     e.preventDefault();
 
-    if (registerData.password !== registerData.confirm_password) {
-      alert("Passwords do not match");
-      return;
-    }
+     console.log("SUBMIT CLICKED");
+
+     const newErrors = {};
+
+     const nameRegex = /^[A-Za-z\s]+$/;
+     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+     const phoneRegex = /^(97|98)\d{8}$/;
+     const passwordRegex =
+       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+     if (!registerData.fullname.trim()) {
+       newErrors.fullname = "Full name is required";
+     } else if (!nameRegex.test(registerData.fullname)) {
+       newErrors.fullname = "Only letters are allowed";
+     }
+
+     if (!emailRegex.test(registerData.email)) {
+       newErrors.email = "Enter a valid email";
+     }
+
+     if (!phoneRegex.test(registerData.phone)) {
+       newErrors.phone = "Enter a valid phone number";
+     }
+
+     if (!passwordRegex.test(registerData.password)) {
+       newErrors.password =
+         "Minimum 8 characters with uppercase, lowercase, number and special character";
+     }
+
+     if (registerData.confirm_password !== registerData.password) {
+       newErrors.confirm_password = "Passwords do not match";
+     }
+
+     setErrors(newErrors);
+
+     if (Object.keys(newErrors).length > 0) {
+       return;
+     }
+     setLoading(true);
 
     try {
       const dataToSend = {
@@ -59,9 +107,13 @@ const RegisterForm = () => {
 
       console.log(response.data);
 
-      alert("Registration Successful!");
+      toast.success("Verification code sent to your email.");
 
-      navigate("/");
+      navigate("/verify-email", {
+        state: {
+          email: registerData.email,
+        },
+      });
     } catch (error) {
       console.error(error);
 
@@ -69,8 +121,19 @@ const RegisterForm = () => {
       console.log("Response:", error.response);
       console.log("Data:", error.response?.data);
 
-      alert(JSON.stringify(error.response?.data, null, 2));
+      const detail = error.response?.data?.detail;
+
+      if (Array.isArray(detail)) {
+        toast.error(detail.map((err) => err.msg).join(", "));
+      } else {
+        toast.error(
+          detail || error.response?.data?.message || "Registration failed!",
+        );
+      }
+    } finally {
+      setLoading(false);
     }
+    
   };
 
   return (
@@ -98,7 +161,11 @@ const RegisterForm = () => {
         <div>
           <label className="mb-2 block font-medium">Full Name</label>
 
-          <div className="flex items-center rounded-xl border px-4">
+          <div
+            className={`flex items-center rounded-xl border px-4 ${
+              errors.fullname ? "border-red-500" : "border-gray-300"
+            }`}
+          >
             <FaUser className="text-gray-400" />
 
             <input
@@ -107,8 +174,13 @@ const RegisterForm = () => {
               onChange={handleChange}
               className="w-full p-4 outline-none"
               placeholder="Your full name"
+              required
             />
           </div>
+
+          {errors.fullname && (
+            <p className="mt-1 text-sm text-red-500">{errors.fullname}</p>
+          )}
         </div>
 
         {/* Email */}
@@ -116,7 +188,11 @@ const RegisterForm = () => {
         <div>
           <label className="mb-2 block font-medium">Email</label>
 
-          <div className="flex items-center rounded-xl border px-4">
+          <div
+            className={`flex items-center rounded-xl border px-4 ${
+              errors.email ? "border-red-500" : "border-gray-300"
+            }`}
+          >
             <FaEnvelope className="text-gray-400" />
 
             <input
@@ -126,8 +202,13 @@ const RegisterForm = () => {
               onChange={handleChange}
               className="w-full p-4 outline-none"
               placeholder="example@gmail.com"
+              required
             />
           </div>
+
+          {errors.email && (
+            <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+          )}
         </div>
 
         {/* Phone */}
@@ -135,7 +216,11 @@ const RegisterForm = () => {
         <div>
           <label className="mb-2 block font-medium">Phone Number</label>
 
-          <div className="flex items-center rounded-xl border px-4">
+          <div
+            className={`flex items-center rounded-xl border px-4 ${
+              errors.phone ? "border-red-500" : "border-gray-300"
+            }`}
+          >
             <FaPhone className="text-gray-400" />
 
             <input
@@ -144,8 +229,13 @@ const RegisterForm = () => {
               onChange={handleChange}
               className="w-full p-4 outline-none"
               placeholder="98XXXXXXXX"
+              required
             />
           </div>
+
+          {errors.phone && (
+            <p className="mt-1 text-sm text-red-500">{errors.phone}</p>
+          )}
         </div>
 
         {/* Password */}
@@ -153,7 +243,11 @@ const RegisterForm = () => {
         <div>
           <label className="mb-2 block font-medium">Password</label>
 
-          <div className="flex items-center rounded-xl border px-4">
+          <div
+            className={`flex items-center rounded-xl border px-4 ${
+              errors.password ? "border-red-500" : "border-gray-300"
+            }`}
+          >
             <FaLock className="text-gray-400" />
 
             <input
@@ -163,6 +257,7 @@ const RegisterForm = () => {
               onChange={handleChange}
               className="w-full p-4 outline-none"
               placeholder="Enter your password"
+              required
             />
 
             <button
@@ -172,6 +267,10 @@ const RegisterForm = () => {
               {showPassword ? <IoEyeOff /> : <IoEye />}
             </button>
           </div>
+
+          {errors.password && (
+            <p className="mt-1 text-sm text-red-500">{errors.password}</p>
+          )}
         </div>
 
         {/* Confirm Password */}
@@ -179,7 +278,11 @@ const RegisterForm = () => {
         <div>
           <label className="mb-2 block font-medium">Confirm Password</label>
 
-          <div className="flex items-center rounded-xl border px-4">
+          <div
+            className={`flex items-center rounded-xl border px-4 ${
+              errors.confirm_password ? "border-red-500" : "border-gray-300"
+            }`}
+          >
             <FaLock className="text-gray-400" />
 
             <input
@@ -189,6 +292,7 @@ const RegisterForm = () => {
               onChange={handleChange}
               className="w-full p-4 outline-none"
               placeholder="Confirm your password"
+              required
             />
 
             <button
@@ -198,10 +302,24 @@ const RegisterForm = () => {
               {showConfirmPassword ? <IoEyeOff /> : <IoEye />}
             </button>
           </div>
+
+          {errors.confirm_password && (
+            <p className="mt-1 text-sm text-red-500">
+              {errors.confirm_password}
+            </p>
+          )}
         </div>
 
-        <button className="w-full rounded-xl bg-blue-600 p-4 font-semibold text-white hover:bg-blue-700">
-          Create Account
+        <button
+          type="submit"
+          disabled={loading}
+          className={`w-full rounded-xl p-4 font-semibold text-white transition ${
+            loading
+              ? "cursor-not-allowed bg-blue-400"
+              : "bg-blue-600 hover:bg-blue-700"
+          }`}
+        >
+          {loading ? "Sending verification code..." : "Create Account"}
         </button>
 
         <p className="text-center">

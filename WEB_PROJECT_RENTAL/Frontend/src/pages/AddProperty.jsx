@@ -65,7 +65,7 @@ const AddProperty = () => {
 
       alert("Property Posted Successfully!");
 
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       console.error(error);
 
