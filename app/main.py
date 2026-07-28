@@ -3,10 +3,18 @@ from app.routes.property import router as property_router
 import app.database.mongodb
 from app.routes import auth
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from app.routes import favourites
 
 app = FastAPI(
     title="FindMyHome API",
     version="1.0.0"
+)
+
+app.mount(
+    "/uploads",
+    StaticFiles(directory="app/uploads"),
+    name="uploads"
 )
 
 app.include_router(property_router)
@@ -23,3 +31,5 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(favourites.router)

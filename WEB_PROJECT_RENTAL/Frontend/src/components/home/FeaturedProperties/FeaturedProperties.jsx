@@ -1,7 +1,12 @@
-import properties from "../../../data/properties/properties";
+
+
 import PropertyCard from "../../property/PropertyCard/PropertyCard";
+import { useProperty } from "../../../context/PropertyContext";
+
 
 const FeaturedProperties = () => {
+  const { filteredProperties } = useProperty();
+
   return (
     <section className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
@@ -15,9 +20,9 @@ const FeaturedProperties = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-8">
-          {properties.map((property) => (
-            <PropertyCard key={property.id} property={property} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredProperties.map((property) => (
+            <PropertyCard key={property._id} property={property} />
           ))}
         </div>
       </div>

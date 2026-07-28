@@ -37,7 +37,7 @@ const NavLinks = () => {
     },
     {
       name: "Categories",
-      path: "/categories",
+      path: "#",
     },
 
     ...(user?.role === "owner"

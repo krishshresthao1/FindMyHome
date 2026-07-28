@@ -13,10 +13,14 @@ import { toast } from "react-toastify";
 import { GoogleLogin } from "@react-oauth/google";
 import { googleLogin } from "../../services/api";
 
+import { useProperty } from "../../context/PropertyContext";
+
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
+
+  const { fetchData } = useProperty();
 
   const [loginData, setLoginData] = useState({
     email: "",
@@ -42,6 +46,8 @@ const LoginForm = () => {
       localStorage.setItem("token", response.data.access_token);
 
       localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      await fetchData();
 
       toast.success("Login successful!");
 
@@ -140,6 +146,8 @@ const LoginForm = () => {
                   "user",
                   JSON.stringify(response.data.user),
                 );
+
+                await fetchData();
 
                 toast.success("Google login successful!");
 

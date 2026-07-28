@@ -11,6 +11,7 @@ class Property(BaseModel):
     rent: int
     phone: str
     description: str
+    property_type: str
 
     # Images
     images: List[str] = []
@@ -25,7 +26,7 @@ class Property(BaseModel):
     balcony: bool = False
 
     # Accessibility
-    road_type: str  # Blacktop / Gravel / Earthen
+    road_connectivity: bool = False
 
     # Nearby Facilities
     grocery_store: bool = False

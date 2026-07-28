@@ -1,20 +1,27 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 
 import Navbar from "../Navbar/Navbar";
 import Footer from "../Footer/Footer";
-
+import { useLayout } from "../../../context/LayoutContext";
 const MainLayout = () => {
-  return (
-    <>
-      <Navbar />
+  const location = useLocation();
 
-      <main>
-        <Outlet />
-      </main>
+  // Read state passed from navigate()
+  const hideNavbar = location.state?.hideNavbar || false;
 
-      <Footer />
-    </>
-  );
+  const { showNavbar, showFooter } = useLayout();
+
+return (
+  <>
+    {showNavbar && <Navbar />}
+
+    <main>
+      <Outlet />
+    </main>
+
+    {showFooter && <Footer />}
+  </>
+);
 };
 
 export default MainLayout;

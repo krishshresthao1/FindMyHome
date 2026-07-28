@@ -2,15 +2,20 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "react-toastify";
+import { useProperty } from "../../../context/PropertyContext";
 
 const NavActions = () => {
   const navigate = useNavigate();
 
   const [showLogout, setShowLogout] = useState(false);
 
+  const { setFavourites } = useProperty();
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+
+    setFavourites([]);
 
     toast.success("Logged out successfully!");
 

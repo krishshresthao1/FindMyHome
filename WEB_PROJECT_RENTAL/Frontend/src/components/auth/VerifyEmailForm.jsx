@@ -24,7 +24,7 @@ const VerifyEmailForm = () => {
         email,
         code,
       });
-
+      
       toast.success(response.data.message);
 
       navigate("/");

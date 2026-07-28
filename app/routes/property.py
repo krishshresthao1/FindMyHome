@@ -5,14 +5,55 @@ from app.models.property import Property
 from app.database.mongodb import property_collection
 from app.utils.dependencies import get_current_user
 
+from fastapi import UploadFile, File, Form
+from typing import List
+
+import uuid
+from pathlib import Path
+
+from fastapi import UploadFile, File, Form, Query
+
+
 router = APIRouter(
     prefix="/properties",
     tags=["Properties"]
 )
 
 @router.get("/")
-def get_properties():
-    properties = list(property_collection.find())
+def get_properties(
+    location: str = Query(None),
+    property_type: str = Query(None),
+    min_price: int = Query(None),
+    max_price: int = Query(None)
+):
+    query = {}
+
+    # Location filter
+    if location and location != "Anywhere":
+        query["location"] = location
+
+    # Property type filter
+    if property_type and property_type != "All Types":
+        query["property_type"] = property_type
+
+    # Minimum rent filter
+    if min_price:
+        query["rent"] = {
+            "$gte": min_price
+        }
+
+    # Maximum rent filter
+    if max_price:
+        if "rent" in query:
+            query["rent"]["$lte"] = max_price
+        else:
+            query["rent"] = {
+                "$lte": max_price
+            }
+
+    properties = list(
+        property_collection.find(query)
+    )
 
     for property in properties:
         property["_id"] = str(property["_id"])
@@ -38,17 +79,127 @@ def get_property(property_id: str):
 
 @router.post("/")
 def post_property(
-    property: Property,
+    title: str = Form(...),
+    location: str = Form(...),
+    latitude: float = Form(0),
+    longitude: float = Form(0),
+    rent: int = Form(...),
+    phone: str = Form(...),
+    description: str = Form(...),
+
+    property_type: str = Form(...),
+
+    bedrooms: int = Form(0),
+    bathrooms: int = Form(0),
+    kitchens: int = Form(0),
+    parking: int = Form(0),
+
+    furnished: bool = Form(False),
+    balcony: bool = Form(False),
+    road_connectivity: bool = Form(False),
+
+    grocery_store: bool = Form(False),
+    school: bool = Form(False),
+    hospital: bool = Form(False),
+    pharmacy: bool = Form(False),
+    bus_stop: bool = Form(False),
+    restaurant: bool = Form(False),
+    park: bool = Form(False),
+    gym: bool = Form(False),
+    atm: bool = Form(False),
+
+    images: List[UploadFile] = File(...),
+
     current_user=Depends(get_current_user)
+
+    
 ):
+    if len(images) > 10:
+        raise HTTPException(
+            status_code=400,
+            detail="Maximum 10 images allowed"
+        )
+    # create property id folder
+    property_id = str(uuid.uuid4())
 
-    property_data = property.model_dump()
+    upload_dir = Path(
+        f"app/uploads/properties/{property_id}"
+    )
 
-    property_data["owner_id"] = str(current_user["_id"])
-    property_data["owner_name"] = current_user["fullname"]
-    property_data["owner_email"] = current_user["email"]
+    upload_dir.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    image_paths = []
+
+
+    # save images
+    for image in images:
+
+        if image.content_type not in [
+            "image/jpeg",
+            "image/png",
+            "image/webp"
+        ]:
+            raise HTTPException(
+                status_code=400,
+                detail="Only JPG, PNG and WEBP images are allowed"
+            )
+
+        unique_filename = f"{uuid.uuid4()}_{image.filename}"
+
+        file_path = upload_dir / unique_filename
+
+        with open(file_path, "wb") as buffer:
+            buffer.write(image.file.read())
+
+
+        image_paths.append(
+        f"/uploads/properties/{property_id}/{unique_filename}"
+    )
+
+
+    property_data = {
+        "title": title,
+        "location": location,
+        "latitude": latitude,
+        "longitude": longitude,
+        "rent": rent,
+        "phone": phone,
+        "description": description,
+
+        "property_type": property_type,
+
+        "images": image_paths,
+
+        "bedrooms": bedrooms,
+        "bathrooms": bathrooms,
+        "kitchens": kitchens,
+        "parking": parking,
+
+        "furnished": furnished,
+        "balcony": balcony,
+        "road_connectivity": road_connectivity,
+
+        "grocery_store": grocery_store,
+        "school": school,
+        "hospital": hospital,
+        "pharmacy": pharmacy,
+        "bus_stop": bus_stop,
+        "restaurant": restaurant,
+        "park": park,
+        "gym": gym,
+        "atm": atm,
+
+        "owner_id": str(current_user["_id"]),
+        "owner_name": current_user["fullname"],
+        "owner_email": current_user["email"]
+    }
+
 
     result = property_collection.insert_one(property_data)
+
 
     return {
         "message": "Property added successfully",

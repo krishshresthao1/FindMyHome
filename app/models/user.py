@@ -1,4 +1,5 @@
 from pydantic import BaseModel, EmailStr
+from typing import List
 
 
 class User(BaseModel):
@@ -7,3 +8,4 @@ class User(BaseModel):
     password: str
     phone: str
     role: str = "owner"
+    favourites: List[str] = []

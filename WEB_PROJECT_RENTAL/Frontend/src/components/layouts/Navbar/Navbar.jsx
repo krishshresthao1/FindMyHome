@@ -5,7 +5,7 @@ import NavActions from "./NavActions";
 
 const Navbar = () => {
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-[9999] border-b border-slate-200 bg-white/95 backdrop-blur">
       <Container>
         <div className="flex h-20 items-center justify-between">
           <Logo />

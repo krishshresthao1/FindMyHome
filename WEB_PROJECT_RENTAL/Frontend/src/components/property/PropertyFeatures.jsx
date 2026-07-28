@@ -101,21 +101,23 @@ const PropertyFeatures = ({ propertyData, handleChange }) => {
         />
       </div>
 
-      {/* Road Type */}
-      <div className="mt-6">
-        <label className="mb-2 block font-medium">Road Type</label>
+      {/* Road Connectivity */}
+      <div className="mt-4 flex items-center justify-between rounded-xl border p-4">
+        <label className="font-medium">Road Connectivity</label>
 
-        <select
-          name="road_type"
-          value={propertyData.road_type}
-          onChange={handleChange}
-          className="w-full rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Select Road Type</option>
-          <option value="Blacktop">Blacktop</option>
-          <option value="Gravel">Gravel</option>
-          <option value="Earthen">Earthen</option>
-        </select>
+        <input
+          type="checkbox"
+          name="road_connectivity"
+          checked={propertyData.road_connectivity}
+          onChange={(e) =>
+            handleChange({
+              target: {
+                name: "road_connectivity",
+                value: e.target.checked,
+              },
+            })
+          }
+        />
       </div>
     </div>
   );

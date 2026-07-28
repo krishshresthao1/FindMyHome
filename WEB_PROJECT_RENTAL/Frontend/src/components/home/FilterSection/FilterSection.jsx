@@ -1,169 +1,152 @@
-import { MapPin, Home, Wallet, Wifi, Sun, Bike } from "lucide-react";
-
+import { MapPin, Home, Wallet } from "lucide-react";
 import { useProperty } from "../../../context/PropertyContext";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const FilterSection = () => {
+
+  const [showLocations, setShowLocations] = useState(false);
   const {
     location,
     setLocation,
 
+    locations,
+
     propertyType,
     setPropertyType,
 
-    budget,
-    setBudget,
+    minPrice,
+    setMinPrice,
 
-    wifi,
-    setWifi,
-
-    solar,
-    setSolar,
-
-    bikeParking,
-    setBikeParking,
+    maxPrice,
+    setMaxPrice,
   } = useProperty();
 
+  const [locationSearch, setLocationSearch] = useState(location);
+  useEffect(() => {
+    setLocationSearch(location);
+  }, [location]);
+
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-lg">
-      <h2 className="mb-8 text-2xl font-bold">Filters</h2>
-
-      {/* LOCATION */}
-
-      <div className="mb-6">
-        <label className="mb-2 flex items-center gap-2 font-semibold">
-          <MapPin size={18} />
-          Location
-        </label>
-
-        <select
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="w-full rounded-xl border border-slate-300 p-3 outline-none focus:border-blue-500"
-        >
-          <option>Anywhere</option>
-
-          <option>New Baneshwor</option>
-
-          <option>Koteshwor</option>
-
-          <option>Kirtipur</option>
-
-          <option>Lalitpur</option>
-
-          <option>Thamel</option>
-        </select>
-      </div>
-
-      {/* PROPERTY */}
-
-      <div className="mb-6">
-        <label className="mb-2 flex items-center gap-2 font-semibold">
-          <Home size={18} />
-          Property Type
-        </label>
-
-        <select
-          value={propertyType}
-          onChange={(e) => setPropertyType(e.target.value)}
-          className="w-full rounded-xl border border-slate-300 p-3 outline-none focus:border-blue-500"
-        >
-          <option>All</option>
-
-          <option>Room</option>
-
-          <option>Flat</option>
-
-          <option>House</option>
-
-          <option>Commercial</option>
-        </select>
-      </div>
-
-      {/* BUDGET */}
-
-      <div className="mb-8">
-        <label className="mb-2 flex items-center gap-2 font-semibold">
-          <Wallet size={18} />
-          Budget
-        </label>
-
-        <select
-          value={budget}
-          onChange={(e) => setBudget(e.target.value)}
-          className="w-full rounded-xl border border-slate-300 p-3 outline-none focus:border-blue-500"
-        >
-          <option>Any</option>
-
-          <option value="Below 10000">Below Rs.10,000</option>
-
-          <option value="10000-20000">Rs.10k – Rs.20k</option>
-
-          <option value="20000-35000">Rs.20k – Rs.35k</option>
-
-          <option value="35000+">Above Rs.35k</option>
-        </select>
-      </div>
-
-      <hr className="mb-8" />
-
-      <h3 className="mb-5 text-lg font-bold">Amenities</h3>
-
-      <div className="space-y-4">
-        <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 p-3 hover:bg-slate-50">
-          <div className="flex items-center gap-3">
-            <Wifi size={18} />
-            WiFi
-          </div>
+    <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+      <div className="flex flex-wrap items-center gap-4">
+        {/* Location */}
+        <div className="relative flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2">
+          <MapPin size={18} className="text-slate-500" />
 
           <input
-            type="checkbox"
-            checked={wifi}
-            onChange={(e) => setWifi(e.target.checked)}
-          />
-        </label>
+            type="text"
+            placeholder="Search location"
+            value={locationSearch}
+            onFocus={() => {
+              setShowLocations(true);
 
-        <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 p-3 hover:bg-slate-50">
-          <div className="flex items-center gap-3">
-            <Sun size={18} />
-            Solar Water
-          </div>
+              if (locationSearch === "Anywhere") {
+                setLocationSearch("");
+              }
+            }}
+            onChange={(e) => {
+              setLocationSearch(e.target.value);
+              setShowLocations(true);
+            }}
+            className="w-40 bg-transparent text-sm outline-none"
+          />
+
+          {showLocations && (
+            <div className="absolute top-12 left-0 z-50 w-full rounded-lg border bg-white shadow-lg">
+              <div
+                onClick={() => {
+                  setLocation("Anywhere");
+                  setLocationSearch("Anywhere");
+                  setShowLocations(false);
+                }}
+                className="cursor-pointer px-3 py-2 hover:bg-slate-100"
+              >
+                Anywhere
+              </div>
+
+              {locations
+                .filter((item) =>
+                  item.toLowerCase().includes(locationSearch.toLowerCase()),
+                )
+                .map((item) => (
+                  <div
+                    key={item}
+                    onClick={() => {
+                      setLocation(item);
+                      setLocationSearch(item);
+                      setShowLocations(false);
+                    }}
+                    className="cursor-pointer px-3 py-2 hover:bg-slate-100"
+                  >
+                    {item}
+                  </div>
+                ))}
+            </div>
+          )}
+        </div>
+
+        {/* Property Type */}
+        <div className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2">
+          <Home size={18} className="text-slate-500" />
+
+          <select
+            value={propertyType}
+            onChange={(e) => setPropertyType(e.target.value)}
+          >
+            <option value="All">All Types</option>
+            <option value="Room">Room</option>
+            <option value="Apartment">Apartment</option>
+            <option value="House">House</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Flat">Flat</option>
+          </select>
+        </div>
+
+        {/* Min Price */}
+        <div className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2">
+          <Wallet size={18} className="text-slate-500" />
 
           <input
-            type="checkbox"
-            checked={solar}
-            onChange={(e) => setSolar(e.target.checked)}
+            type="number"
+            placeholder="Min Rent"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            className="w-24 bg-transparent text-sm outline-none"
           />
-        </label>
+        </div>
 
-        <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 p-3 hover:bg-slate-50">
-          <div className="flex items-center gap-3">
-            <Bike size={18} />
-            Bike Parking
-          </div>
+        {/* Max Price */}
+        <div className="flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2">
+          <Wallet size={18} className="text-slate-500" />
 
           <input
-            type="checkbox"
-            checked={bikeParking}
-            onChange={(e) => setBikeParking(e.target.checked)}
+            type="number"
+            placeholder="Max Rent"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            className="w-24 bg-transparent text-sm outline-none"
           />
-        </label>
+        </div>
+
+        {/* Reset */}
+        <button
+          onClick={() => {
+            setLocation("Anywhere");
+            setLocationSearch("Anywhere");
+            setPropertyType("All");
+            setMinPrice("");
+            setMaxPrice("");
+          }}
+          className="ml-auto rounded-lg border border-slate-300 px-5 py-2 text-sm font-medium transition hover:bg-slate-100"
+        >
+          Reset
+        </button>
       </div>
-
-      <button
-        className="mt-8 w-full rounded-xl border border-slate-300 py-3 font-semibold transition hover:bg-slate-100"
-        onClick={() => {
-          setLocation("Anywhere");
-          setPropertyType("All");
-          setBudget("Any");
-          setWifi(false);
-          setSolar(false);
-          setBikeParking(false);
-        }}
-      >
-        Reset Filters
-      </button>
     </div>
   );
 };
+
+
 
 export default FilterSection;

@@ -28,11 +28,11 @@ export const googleLogin = (credential) => {
    Property APIs
 =========================== */
 
-// Add Property
-export const postProperty = (propertyData, token) => {
-  return api.post("/properties/", propertyData, {
+export const postProperty = (data, token) => {
+  return api.post("/properties/", data, {
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
     },
   });
 };
@@ -75,3 +75,23 @@ export const resendOtp = (email) =>
       email,
     },
   });
+
+  /* ===========================
+   Favourite APIs
+=========================== */
+
+export const getFavourites = (token) => {
+  return api.get("/favourites/", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const toggleFavourite = (propertyId, token) => {
+  return api.post(`/favourites/${propertyId}`, null, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

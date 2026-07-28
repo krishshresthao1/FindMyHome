@@ -8,7 +8,7 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 ENV_PATH = Path(__file__).resolve().parents[1] / ".env"
-load_dotenv(dotenv_path=ENV_PATH)
+load_dotenv(dotenv_path=ENV_PATH, override=True)
 
 
 def send_verification_email(receiver_email: str, otp: str):
@@ -41,9 +41,6 @@ def send_verification_email(receiver_email: str, otp: str):
 
     with smtplib.SMTP("smtp.gmail.com", 587) as server:
         server.starttls()
-
-        print("EMAIL:", sender_email)
-        print("PASSWORD:", sender_password)
 
         server.login(sender_email, sender_password)
         server.send_message(message)

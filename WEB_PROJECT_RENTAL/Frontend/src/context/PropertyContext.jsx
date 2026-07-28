@@ -1,73 +1,86 @@
-import { createContext, useContext, useMemo, useState } from "react";
-import properties from "../data/properties/properties";
+import { createContext, useContext, useMemo, useState, useEffect } from "react";
+import { getProperties, getFavourites } from "../services/api";
+
+
 
 const PropertyContext = createContext();
 
 export const PropertyProvider = ({ children }) => {
-  // Search
+  const [properties, setProperties] = useState([]);
+  const [favourites, setFavourites] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const [search, setSearch] = useState("");
 
-  // Filters
   const [location, setLocation] = useState("Anywhere");
   const [propertyType, setPropertyType] = useState("All");
-  const [budget, setBudget] = useState("Any");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
 
-  // Amenities
-  const [wifi, setWifi] = useState(false);
-  const [solar, setSolar] = useState(false);
-  const [bikeParking, setBikeParking] = useState(false);
+  const fetchData = async () => {
+    try {
+      const propertyResponse = await getProperties();
+
+      console.log("PROPERTY RESPONSE:", propertyResponse.data);
+
+      setProperties(
+        Array.isArray(propertyResponse.data) ? propertyResponse.data : [],
+      );
+
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        const favouriteResponse = await getFavourites(token);
+        setFavourites(favouriteResponse.data.favourites || []);
+      } else {
+        setFavourites([]);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const locations = useMemo(() => {
+    const uniqueLocations = [
+      ...new Set(properties.map((property) => property.location)),
+    ];
+
+    return uniqueLocations;
+  }, [properties]);
 
   const filteredProperties = useMemo(() => {
     return properties.filter((property) => {
-      // Search
       const matchesSearch =
-        property.title.toLowerCase().includes(search.toLowerCase()) ||
-        property.location.toLowerCase().includes(search.toLowerCase());
+        property.title?.toLowerCase().includes(search.toLowerCase()) ||
+        property.location?.toLowerCase().includes(search.toLowerCase());
 
-      // Location
       const matchesLocation =
         location === "Anywhere" || property.location === location;
 
-      // Property Type
       const matchesType =
-        propertyType === "All" || property.propertyType === propertyType;
+        propertyType === "All" || property.property_type === propertyType;
 
-      // Budget
-      let matchesBudget = true;
+      const min = minPrice === "" ? 0 : Number(minPrice);
+      const max = maxPrice === "" ? Infinity : Number(maxPrice);
 
-      if (budget === "Below 10000") matchesBudget = property.price < 10000;
+      const matchesBudget = property.rent >= min && property.rent <= max;
 
-      if (budget === "10000-20000")
-        matchesBudget = property.price >= 10000 && property.price <= 20000;
-
-      if (budget === "20000-35000")
-        matchesBudget = property.price > 20000 && property.price <= 35000;
-
-      if (budget === "35000+") matchesBudget = property.price > 35000;
-
-      // Amenities
-      const matchesWifi = !wifi || property.amenities.wifi;
-
-      const matchesSolar = !solar || property.amenities.solar;
-
-      const matchesBike = !bikeParking || property.amenities.bikeParking;
-
-      return (
-        matchesSearch &&
-        matchesLocation &&
-        matchesType &&
-        matchesBudget &&
-        matchesWifi &&
-        matchesSolar &&
-        matchesBike
-      );
+      return matchesSearch && matchesLocation && matchesType && matchesBudget;
     });
-  }, [search, location, propertyType, budget, wifi, solar, bikeParking]);
+  }, [properties, search, location, propertyType, minPrice, maxPrice]);
 
   return (
     <PropertyContext.Provider
       value={{
+        properties,
         filteredProperties,
+        loading,
 
         search,
         setSearch,
@@ -75,20 +88,21 @@ export const PropertyProvider = ({ children }) => {
         location,
         setLocation,
 
+        locations,
+
         propertyType,
         setPropertyType,
 
-        budget,
-        setBudget,
+        minPrice,
+        setMinPrice,
 
-        wifi,
-        setWifi,
+        maxPrice,
+        setMaxPrice,
 
-        solar,
-        setSolar,
+        favourites,
+        setFavourites,
 
-        bikeParking,
-        setBikeParking,
+        fetchData,
       }}
     >
       {children}
@@ -96,4 +110,6 @@ export const PropertyProvider = ({ children }) => {
   );
 };
 
-export const useProperty = () => useContext(PropertyContext);
+export const useProperty = () => {
+  return useContext(PropertyContext);
+};

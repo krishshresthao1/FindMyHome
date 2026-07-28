@@ -1,0 +1,19 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment files
+.env
+**/.env
+
+# Uploads
+app/uploads/
+
+# Node
+WEB_PROJECT_RENTAL/Frontend/node_modules/
+WEB_PROJECT_RENTAL/Frontend/dist/
+
+# OS files
+.DS_Store
+Thumbs.db

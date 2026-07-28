@@ -12,15 +12,22 @@ import "./index.css";
 import { PropertyProvider } from "./context/PropertyContext";
 import "react-toastify/dist/ReactToastify.css";
 
+import "leaflet/dist/leaflet.css";
+
+import { LayoutProvider } from "./context/LayoutContext";
+
+
 
 console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-      <PropertyProvider>
-        <App />
-      </PropertyProvider>
+      <LayoutProvider>
+        <PropertyProvider>
+          <App />
+        </PropertyProvider>
+      </LayoutProvider>
     </GoogleOAuthProvider>
   </StrictMode>,
 );
