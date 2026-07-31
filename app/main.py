@@ -5,6 +5,7 @@ from app.routes import auth
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.routes import favourites
+from app.routes.user import router as user_router
 
 app = FastAPI(
     title="FindMyHome API",
@@ -33,3 +34,5 @@ app.add_middleware(
 )
 
 app.include_router(favourites.router)
+
+app.include_router(user_router)

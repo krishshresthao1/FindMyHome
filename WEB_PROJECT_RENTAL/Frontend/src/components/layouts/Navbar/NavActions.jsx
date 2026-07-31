@@ -3,6 +3,7 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "react-toastify";
 import { useProperty } from "../../../context/PropertyContext";
+import { User } from "lucide-react";
 
 const NavActions = () => {
   const navigate = useNavigate();
@@ -10,6 +11,8 @@ const NavActions = () => {
   const [showLogout, setShowLogout] = useState(false);
 
   const { setFavourites } = useProperty();
+
+  const user = JSON.parse(localStorage.getItem("user"));
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -24,6 +27,12 @@ const NavActions = () => {
 
   return (
     <div className="flex items-center gap-4">
+      <button
+        onClick={() => navigate("/profile")}
+        className="flex h-10 w-10 items-center justify-center rounded-full border border-slate-300 bg-white text-slate-700 transition hover:border-blue-600 hover:text-blue-600"
+      >
+        <User size={20} />
+      </button>
       <Link
         to="/saved"
         className="text-sm font-medium text-slate-700 hover:text-blue-600"

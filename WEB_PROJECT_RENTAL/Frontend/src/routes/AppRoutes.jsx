@@ -16,6 +16,7 @@ import { ToastContainer } from "react-toastify";
 
 import VerifyEmail from "../pages/VerifyEmail";
 
+
 const AppRoutes = () => {
   return (
     <BrowserRouter>

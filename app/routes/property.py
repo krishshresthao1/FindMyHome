@@ -8,10 +8,10 @@ from app.utils.dependencies import get_current_user
 from fastapi import UploadFile, File, Form
 from typing import List
 
-import uuid
 from pathlib import Path
 
 from fastapi import UploadFile, File, Form, Query
+import uuid
 
 
 router = APIRouter(
