@@ -38,8 +38,10 @@ export const postProperty = (data, token) => {
 };
 
 // Get All Properties
-export const getProperties = () => {
-  return api.get("/properties/");
+export const getProperties = (params = {}) => {
+  return api.get("/properties/", {
+    params,
+  });
 };
 
 // Get Single Property

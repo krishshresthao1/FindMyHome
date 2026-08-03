@@ -36,8 +36,8 @@ const NavLinks = () => {
       path: "/search",
     },
     {
-      name: "Categories",
-      path: "#",
+      name: "Map",
+      path: "map",
     },
 
     ...(user?.role === "owner"

@@ -11,6 +11,7 @@ import Register from "../pages/Register";
 import Saved from "../pages/Saved";
 import Profile from "../pages/Profile";
 import AddProperty from "../pages/AddProperty";
+import Map from "../pages/Map";
 
 import { ToastContainer } from "react-toastify";
 
@@ -33,6 +34,7 @@ const AppRoutes = () => {
           <Route path="/home" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/property/:id" element={<PropertyDetails />} />
+          <Route path="/map" element={<Map />} />
           <Route path="/saved" element={<Saved />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/add-property" element={<AddProperty />} />
