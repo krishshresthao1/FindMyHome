@@ -1,17 +1,17 @@
 import HeroBackground from "./HeroBackground";
 import HeroContent from "./HeroContent";
-import HeroImage from "./HeroImage";
+import Container from "../../common/Container/Container";
 
 const Hero = () => {
   return (
-    <section className="relative overflow-hidden bg-slate-50">
+    <section className="relative min-h-screen overflow-hidden">
       <HeroBackground />
 
-      <div className="mx-auto flex min-h-[88vh] max-w-7xl items-center justify-between gap-20 px-6 lg:px-8">
-        <HeroContent />
-
-        <HeroImage />
-      </div>
+      <Container>
+        <div className="relative z-10 flex min-h-screen items-center">
+          <HeroContent />
+        </div>
+      </Container>
     </section>
   );
 };

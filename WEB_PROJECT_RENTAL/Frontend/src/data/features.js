@@ -1,34 +1,32 @@
+import { ShieldCheck, MapPin, Search, Handshake } from "lucide-react";
+
 const features = [
   {
     id: 1,
-    icon: "🏡",
     title: "Verified Properties",
     description:
-      "Every listing is reviewed to reduce fake advertisements.",
+      "Discover trusted rental listings with accurate details and genuine information.",
+    icon: ShieldCheck,
   },
-
   {
     id: 2,
-    icon: "💬",
-    title: "Direct Owner Contact",
+    title: "Find Homes Anywhere",
     description:
-      "Talk directly with property owners without unnecessary middlemen.",
+      "Search rental properties across Nepal based on your preferred location.",
+    icon: MapPin,
   },
-
   {
     id: 3,
-    icon: "📍",
-    title: "Kathmandu Focused",
+    title: "Smart Search & Filters",
     description:
-      "Specially designed for Kathmandu Valley rental market.",
+      "Quickly find properties using price, location, facilities, and property type.",
+    icon: Search,
   },
-
   {
     id: 4,
-    icon: "⚡",
-    title: "Fast Search",
-    description:
-      "Find rooms, flats and houses within seconds using smart filters.",
+    title: "Connect Directly",
+    description: "Communicate with property owners and make renting easier.",
+    icon: Handshake,
   },
 ];
 

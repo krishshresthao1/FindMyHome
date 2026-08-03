@@ -33,7 +33,7 @@ const PropertyPopup = ({ property }) => {
 
         <Link
           to={`/property/${property._id}`}
-          className="mt-4 block rounded-xl bg-blue-600 py-2 text-center font-semibold text-white transition hover:bg-blue-700"
+          className="mt-4 block rounded-xl bg-blue-600 py-2 text-center font-semibold !text-white transition hover:bg-blue-700"
         >
           View Details
         </Link>

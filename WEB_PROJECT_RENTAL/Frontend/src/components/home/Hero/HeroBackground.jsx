@@ -1,11 +1,20 @@
+import heroBg from "../../../assets/images/hero/hero-bg.png";
+
 const HeroBackground = () => {
   return (
     <>
-      <div className="absolute -left-32 top-20 h-96 w-96 rounded-full bg-blue-100 blur-[120px]" />
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${heroBg})`,
+        }}
+      />
+      {/* Soft white overlay */}
+      <div className="absolute inset-0 bg-white/10" />
 
-      <div className="absolute right-0 top-0 h-[500px] w-[500px] rounded-full bg-sky-100 blur-[150px]" />
-
-      <div className="absolute bottom-0 left-1/2 h-[350px] w-[350px] -translate-x-1/2 rounded-full bg-indigo-100 blur-[130px]" />
+      {/* Subtle left gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-white/70 via-white/35 to-transparent" />
     </>
   );
 };

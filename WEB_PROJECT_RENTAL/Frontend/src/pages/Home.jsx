@@ -4,7 +4,6 @@ import BrowseArea from "../components/home/BrowseArea/BrowseArea";
 import FeaturedProperties from "../components/home/FeaturedProperties/FeaturedProperties";
 import Features from "../components/home/Features/Features";
 import HowItWorks from "../components/home/HowItWorks/HowItWorks";
-import CTA from "../components/home/CTA/CTA";
 
 const Home = () => {
   return (
@@ -13,16 +12,13 @@ const Home = () => {
 
       <Categories />
 
-      <BrowseArea />
-      
+      <BrowseArea /> 
 
       <FeaturedProperties />
 
       <Features />
 
       <HowItWorks />
-
-      <CTA />
     </>
   );
 };

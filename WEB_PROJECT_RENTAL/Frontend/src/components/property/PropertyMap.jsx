@@ -348,7 +348,7 @@ const PropertyMap = ({ property }) => {
       )}
       <div ref={mapWrapperRef} className="mt-8">
         {isFullscreen ? (
-          <div className="fixed inset-0 z-0 bg-black">
+          <div className="fixed inset-0 z-100 bg-black">
             <MapContainer
               center={[property.latitude, property.longitude]}
               zoom={15}
@@ -378,7 +378,7 @@ const PropertyMap = ({ property }) => {
           <MapContainer
             center={[property.latitude, property.longitude]}
             zoom={15}
-            className="h-[70vh] rounded-3xl"
+            className="h-[70vh] z-[98] rounded-3xl"
           >
             <ResizeMap fullscreen={isFullscreen} />
             {userLocation && <FollowUser position={userLocation} />}
@@ -418,7 +418,7 @@ const PropertyMap = ({ property }) => {
                   {routeInfo.mode === "cycling-regular" && (
                     <>
                       <Bike size={24} className="text-green-600" />
-                      Cycling
+                      Riding
                     </>
                   )}
 

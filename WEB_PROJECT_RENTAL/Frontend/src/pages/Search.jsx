@@ -1,4 +1,4 @@
-import FilterSection from "../components/home/FilterSection/FilterSection";
+import FilterSection from "../components/FilterSection/FilterSection";
 import PropertyGrid from "../components/property/PropertyGrid/PropertyGrid";
 
 const Search = () => {

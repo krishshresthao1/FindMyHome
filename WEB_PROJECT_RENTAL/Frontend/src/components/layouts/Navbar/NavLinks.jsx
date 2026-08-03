@@ -37,7 +37,7 @@ const NavLinks = () => {
     },
     {
       name: "Map",
-      path: "map",
+      path: "/map",
     },
 
     ...(user?.role === "owner"
@@ -51,18 +51,43 @@ const NavLinks = () => {
   ];
 
   return (
-    <nav className="hidden items-center gap-10 lg:flex">
+    <nav className="hidden items-center gap-8 lg:flex">
       {navigation.map((item) => (
         <NavLink
           key={item.path}
           to={item.path}
           className={({ isActive }) =>
-            `relative text-[15px] font-medium transition-all duration-200 ${
-              isActive ? "text-blue-600" : "text-slate-700 hover:text-blue-600"
-            }`
+            `
+    group
+    relative
+    text-[15px]
+    font-medium
+    transition-all
+    duration-300
+    ${isActive ? "text-blue-600" : "text-slate-700 hover:text-blue-600"}
+    `
           }
         >
-          {item.name}
+          {({ isActive }) => (
+            <>
+              {item.name}
+
+              <span
+                className={`
+          absolute
+          -bottom-2
+          left-0
+          h-[2px]
+          w-full
+          bg-blue-600
+          transition-transform
+          duration-300
+          origin-left
+          ${isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"}
+        `}
+              />
+            </>
+          )}
         </NavLink>
       ))}
     </nav>

@@ -1,5 +1,5 @@
 import { MapPin, Home, Wallet } from "lucide-react";
-import { useProperty } from "../../../context/PropertyContext";
+import { useProperty } from "../../context/PropertyContext";
 import { useState } from "react";
 import { useEffect } from "react";
 

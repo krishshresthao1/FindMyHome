@@ -6,10 +6,12 @@ const HowItWorks = () => {
     <section className="bg-white py-24">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-16 text-center">
-          <h2 className="text-4xl font-bold">How RentNepal Works</h2>
+          <h2 className="text-4xl font-bold text-slate-900">
+            How FindMyHome Works
+          </h2>
 
           <p className="mt-4 text-lg text-slate-600">
-            Finding your next rental home takes only three simple steps.
+            Find your ideal rental home in three simple steps.
           </p>
         </div>
 

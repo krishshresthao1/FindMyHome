@@ -1,29 +1,29 @@
+import { Search, Building2, KeyRound } from "lucide-react";
+
 const steps = [
   {
     id: 1,
-    number: "01",
-    icon: "🔍",
-    title: "Search Property",
+    number: "1",
+    title: "Search Your Home",
     description:
-      "Browse verified rooms, flats and houses across Kathmandu Valley using smart filters.",
+      "Browse properties by location, budget, property type, and facilities that match your needs.",
+    icon: Search,
   },
-
   {
     id: 2,
-    number: "02",
-    icon: "📞",
-    title: "Contact Owner",
+    number: "2",
+    title: "Explore Properties",
     description:
-      "Call or message the owner directly without unnecessary middlemen.",
+      "View detailed listings with photos, amenities, and important property information.",
+    icon: Building2,
   },
-
   {
     id: 3,
-    number: "03",
-    icon: "🔑",
-    title: "Move In",
+    number: "3",
+    title: "Connect & Move In",
     description:
-      "Visit the property, finalize your agreement and move into your new home.",
+      "Contact property owners directly and find your perfect rental home.",
+    icon: KeyRound,
   },
 ];
 

@@ -1,103 +1,175 @@
 import { Link } from "react-router-dom";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone, ArrowRight } from "lucide-react";
 
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-slate-900 text-slate-300">
-      <div className="mx-auto grid max-w-7xl grid-cols-4 gap-12 px-6 py-20">
+    <footer className="bg-slate-950 text-slate-300">
+      <div
+        className="
+        mx-auto
+        grid
+        max-w-7xl
+        grid-cols-1
+        gap-12
+        px-6
+        py-20
+        md:grid-cols-2
+        lg:grid-cols-4
+      "
+      >
         {/* Brand */}
 
         <div>
           <h2 className="text-3xl font-extrabold text-white">FindMyHome</h2>
 
           <p className="mt-5 leading-7">
-            Helping people discover verified rental properties across Kathmandu
-            Valley.
+            Making property search easier by connecting people with verified
+            rental homes across Nepal.
           </p>
 
           <div className="mt-8 flex gap-5">
-            <FaFacebookF className="cursor-pointer transition hover:text-white" />
+            <FaFacebookF
+              className="cursor-pointer transition hover:text-white"
+              size={20}
+            />
 
-            <FaInstagram className="cursor-pointer transition hover:text-white" />
+            <FaInstagram
+              className="cursor-pointer transition hover:text-white"
+              size={20}
+            />
 
-            <FaLinkedinIn className="cursor-pointer transition hover:text-white" />
+            <FaLinkedinIn
+              className="cursor-pointer transition hover:text-white"
+              size={20}
+            />
           </div>
         </div>
 
         {/* Quick Links */}
 
         <div>
-          <h3 className="mb-5 text-xl font-semibold text-white">Quick Links</h3>
+          <h3 className="mb-6 text-lg font-semibold text-white">Quick Links</h3>
 
           <ul className="space-y-4">
             <li>
-              <Link to="/">Home</Link>
+              <Link className="transition hover:text-white" to="/home">
+                Home
+              </Link>
             </li>
 
             <li>
-              <Link to="/search">Browse</Link>
+              <Link className="transition hover:text-white" to="/search">
+                Browse Properties
+              </Link>
             </li>
 
             <li>
-              <Link to="/about">About</Link>
+              <Link className="transition hover:text-white" to="/saved">
+                Saved Homes
+              </Link>
             </li>
 
             <li>
-              <Link to="/contact">Contact</Link>
+              <Link className="transition hover:text-white" to="/contact">
+                Contact Us
+              </Link>
             </li>
           </ul>
         </div>
 
-        {/* Property */}
+        {/* Categories */}
 
         <div>
-          <h3 className="mb-5 text-xl font-semibold text-white">Property</h3>
+          <h3 className="mb-6 text-lg font-semibold text-white">Explore</h3>
 
           <ul className="space-y-4">
-            <li>Rooms</li>
+            <li>
+              <Link
+                to="/properties?type=apartment"
+                className="transition hover:text-white"
+              >
+                Apartments
+              </Link>
+            </li>
 
-            <li>Flats</li>
+            <li>
+              <Link
+                to="/properties?type=house"
+                className="transition hover:text-white"
+              >
+                Houses
+              </Link>
+            </li>
 
-            <li>Houses</li>
+            <li>
+              <Link
+                to="/properties?type=room"
+                className="transition hover:text-white"
+              >
+                Rooms
+              </Link>
+            </li>
 
-            <li>Commercial</li>
+            <li>
+              <Link
+                to="/properties?type=commercial"
+                className="transition hover:text-white"
+              >
+                Commercial
+              </Link>
+            </li>
           </ul>
         </div>
 
         {/* Contact */}
 
         <div>
-          <h3 className="mb-5 text-xl font-semibold text-white">Contact</h3>
+          <h3 className="mb-6 text-lg font-semibold text-white">Contact</h3>
 
           <div className="space-y-5">
-            <div className="flex gap-3">
-              <MapPin />
+            <div className="flex items-center gap-3">
+              <MapPin size={20} className="text-blue-400" />
 
-              <span>Kathmandu, Nepal</span>
+              <span>Nepal</span>
             </div>
 
-            <div className="flex gap-3">
-              <Phone />
+            <div className="flex items-center gap-3">
+              <Phone size={20} className="text-blue-400" />
 
               <span>+977 98XXXXXXXX</span>
             </div>
 
-            <div className="flex gap-3">
-              <Mail />
+            <div className="flex items-center gap-3">
+              <Mail size={20} className="text-blue-400" />
 
-              <span>info@rentnepal.com</span>
+              <span>support@findmyhome.com</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="border-t border-slate-800">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6">
-          <p className="text-sm">© 2026 RentNepal. All rights reserved.</p>
+      {/* Bottom */}
 
-          <p className="text-sm">Built with ❤️ in Nepal.</p>
+      <div className="border-t border-slate-800">
+        <div
+          className="
+          mx-auto
+          flex
+          max-w-7xl
+          flex-col
+          gap-3
+          px-6
+          py-6
+          text-sm
+          md:flex-row
+          md:items-center
+          md:justify-between
+        "
+        >
+          <p>© 2026 FindMyHome. All rights reserved.</p>
+
         </div>
       </div>
     </footer>

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "../components/layouts/MainLayout/MainLayout";
 import AuthLayout from "../components/layouts/AuthLayout/AuthLayout";
+import AppLayout from "../components/layouts/AppLayout/applayout";
 
 import Home from "../pages/Home";
 import Search from "../pages/Search";
@@ -17,10 +18,14 @@ import { ToastContainer } from "react-toastify";
 
 import VerifyEmail from "../pages/VerifyEmail";
 
+import ScrollToTop from "../components/common/ScrollToTop";
 
 const AppRoutes = () => {
   return (
     <BrowserRouter>
+    
+      <ScrollToTop />
+
       <Routes>
         {/* Login & Register (No Navbar/Footer) */}
         <Route element={<AuthLayout />}>
@@ -29,14 +34,23 @@ const AppRoutes = () => {
           <Route path="/verify-email" element={<VerifyEmail />} />
         </Route>
 
-        {/* Main Website (With Navbar/Footer) */}
+        {/* Landing page (With Navbar/Footer) */}
         <Route element={<MainLayout />}>
           <Route path="/home" element={<Home />} />
+        </Route>
+
+        {/* Application pages */}
+        <Route element={<AppLayout />}>
           <Route path="/search" element={<Search />} />
+
           <Route path="/property/:id" element={<PropertyDetails />} />
+
           <Route path="/map" element={<Map />} />
+
           <Route path="/saved" element={<Saved />} />
+
           <Route path="/profile" element={<Profile />} />
+
           <Route path="/add-property" element={<AddProperty />} />
         </Route>
       </Routes>
