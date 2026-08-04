@@ -25,7 +25,6 @@ const PropertyHero = ({ property }) => {
 
   const { setShowNavbar, setShowFooter } = useLayout();
   
-  console.log("ORS TOKEN:", import.meta.env.VITE_ORS_API_KEY);
   const changeImage = (index) => {
     setCurrentImage(index);
 

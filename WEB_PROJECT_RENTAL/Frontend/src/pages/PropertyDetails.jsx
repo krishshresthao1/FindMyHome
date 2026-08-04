@@ -12,12 +12,16 @@ import { getPropertyById } from "../services/api";
 
 import { useNavigate } from "react-router-dom";
 
+import ChatBox from "../components/Chat/ChatBox";
+
 const PropertyDetails = () => {
   const { id } = useParams();
 
   const [property, setProperty] = useState(null);
 
   const navigate = useNavigate();
+
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -48,7 +52,22 @@ const PropertyDetails = () => {
             size={20}
             className="transition-transform duration-300 group-hover:-translate-x-1"
           />
-          Back to Properties
+          Back
+        </button>
+
+        <button
+          onClick={() => setShowChat(true)}
+          className="
+          rounded-xl
+          bg-blue-600
+          px-6
+          py-3
+          font-semibold
+          text-white
+          hover:bg-blue-700
+          "
+        >
+          Chat with Owner
         </button>
 
         <PropertyHero property={property} />
@@ -60,6 +79,15 @@ const PropertyDetails = () => {
         <PropertyLocation property={property} />
 
         <OwnerCard property={property} />
+
+        {showChat && (
+          <ChatBox
+            receiverId={property.owner_id}
+            receiverName={property.owner_name}
+            propertyId={property._id}
+            onClose={() => setShowChat(false)}
+          />
+        )}
       </div>
     </section>
   );

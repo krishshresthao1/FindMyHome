@@ -207,28 +207,29 @@ def login(login_data: LoginSchema):
         "token_type": "bearer",
 
         "user": {
-                "name": user.get("name", ""),
-                "email": user["email"],
-                "role": user["role"]
-            }
+            "_id": str(user["_id"]),
+            "name": user.get("fullname", ""),
+            "email": user["email"],
+            "role": user["role"]
+        } 
     }
 
 @router.post("/google")
 def google_login(data: GoogleAuthSchema):
 
     try:
-
         idinfo = id_token.verify_oauth2_token(
             data.credential,
             requests.Request(),
             os.getenv("GOOGLE_CLIENT_ID")
         )
 
-    except Exception:
+    except Exception as e:
+        print("GOOGLE LOGIN ERROR:", e)
 
         raise HTTPException(
             status_code=401,
-            detail="Invalid Google Token"
+            detail=str(e)
         )
 
     email = idinfo["email"]
@@ -263,10 +264,11 @@ def google_login(data: GoogleAuthSchema):
         "token_type": "bearer",
 
         "user": {
-                "name": user.get("name", ""),
-                "email": user["email"],
-                "role": user["role"]
-            }
+            "_id": str(user["_id"]),
+            "name": user.get("fullname", ""),
+            "email": user["email"],
+            "role": user["role"]
+        }
         
     }
 

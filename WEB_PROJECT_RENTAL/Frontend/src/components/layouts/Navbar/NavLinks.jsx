@@ -36,6 +36,10 @@ const NavLinks = () => {
       path: "/search",
     },
     {
+      name: "Categories",
+      path: "/categories",
+    },
+    {
       name: "Map",
       path: "/map",
     },
@@ -45,6 +49,10 @@ const NavLinks = () => {
           {
             name: "Post Property",
             path: "/add-property",
+          },
+          {
+            name: "Messages",
+            path: "/messages",
           },
         ]
       : []),

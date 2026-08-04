@@ -19,10 +19,14 @@ import MunicipalityBoundary from "./MunicipalityBoundary";
 import { userLocationIcon } from "./MapIcons";
 
 
-const FitBounds = ({ properties }) => {
+const FitBounds = ({ properties, selectedMunicipality }) => {
   const map = useMap();
 
   useEffect(() => {
+    // If a municipality is selected,
+    // don't automatically change the viewport.
+    if (selectedMunicipality) return;
+
     if (!properties.length) return;
 
     const bounds = L.latLngBounds(
@@ -34,10 +38,11 @@ const FitBounds = ({ properties }) => {
       animate: true,
       duration: 1,
     });
-  }, [properties, map]);
+  }, [properties, selectedMunicipality, map]);
 
   return null;
 };
+
 
 const PropertyMap = ({ properties: initialProperties }) => {
   const [properties, setProperties] = useState(initialProperties);
@@ -158,7 +163,10 @@ const PropertyMap = ({ properties: initialProperties }) => {
 
         <MunicipalityBoundary municipality={selectedMunicipality} />
 
-        <FitBounds properties={properties} />
+        <FitBounds
+          properties={properties}
+          selectedMunicipality={selectedMunicipality}
+        />
 
         {properties.map((property) => (
           <PropertyMarker key={property._id} property={property} />

@@ -64,8 +64,8 @@ const PropertyFeatures = ({ propertyData, handleChange }) => {
       </div>
 
       {/* Furnished */}
-      <div className="mt-6 flex items-center justify-between rounded-xl border p-4">
-        <label className="font-medium">Furnished</label>
+      <label className="mt-4 flex cursor-pointer items-center justify-between rounded-xl border border-slate-600 p-4 transition hover:border-blue-500 hover:bg-blue-50">
+        <span className="font-medium text-slate-700">Furnished</span>
 
         <input
           type="checkbox"
@@ -79,12 +79,13 @@ const PropertyFeatures = ({ propertyData, handleChange }) => {
               },
             })
           }
+          className="h-5 w-5 cursor-pointer accent-blue-600"
         />
-      </div>
+      </label>
 
       {/* Balcony */}
-      <div className="mt-4 flex items-center justify-between rounded-xl border p-4">
-        <label className="font-medium">Balcony Available</label>
+      <label className="mt-4 flex cursor-pointer items-center justify-between rounded-xl border border-slate-600 p-4 transition hover:border-blue-500 hover:bg-blue-50">
+        <span className="font-medium text-slate-700">Balcony</span>
 
         <input
           type="checkbox"
@@ -98,12 +99,13 @@ const PropertyFeatures = ({ propertyData, handleChange }) => {
               },
             })
           }
+          className="h-5 w-5 cursor-pointer accent-blue-600"
         />
-      </div>
+      </label>
 
       {/* Road Connectivity */}
-      <div className="mt-4 flex items-center justify-between rounded-xl border p-4">
-        <label className="font-medium">Road Connectivity</label>
+      <label className="mt-4 flex cursor-pointer items-center justify-between rounded-xl border border-slate-600 p-4 transition hover:border-blue-500 hover:bg-blue-50">
+        <span className="font-medium text-slate-700">Road Connectivity</span>
 
         <input
           type="checkbox"
@@ -117,8 +119,9 @@ const PropertyFeatures = ({ propertyData, handleChange }) => {
               },
             })
           }
+          className="h-5 w-5 cursor-pointer accent-blue-600"
         />
-      </div>
+      </label>
     </div>
   );
 };

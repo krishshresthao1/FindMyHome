@@ -4,6 +4,7 @@ import room from "../../../assets/images/categories/Room.jpg";
 import hostel from "../../../assets/images/categories/Hostel.jpg";
 import commercial from "../../../assets/images/categories/office.jpg";
 import land from "../../../assets/images/categories/land.jpg";
+import { Link } from "react-router-dom";
 
 import {
   Building2,
@@ -17,31 +18,37 @@ import {
 export const categories = [
   {
     name: "Apartments",
+    type: "Apartment",
     description: "Modern flats in city areas",
     image: apartment,
   },
   {
     name: "Houses",
+    type: "House",
     description: "Comfortable homes for families",
     image: house,
   },
   {
     name: "Rooms",
+    type: "Room",
     description: "Affordable rooms for rent",
     image: room,
   },
   {
     name: "Hostels",
+    type: "Hostel",
     description: "Student friendly stays",
     image: hostel,
   },
   {
     name: "Commercial",
+    type: "Commercial",
     description: "Office and shop spaces",
     image: commercial,
   },
   {
     name: "Land",
+    type: "Land",
     description: "Plots and open spaces",
     image: land,
   },
@@ -49,23 +56,25 @@ export const categories = [
 
 const CategoryCard = ({ category }) => {
   return (
-    <div className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
-      <div className="relative h-48 overflow-hidden">
-        <img
-          src={category.image}
-          alt={category.name}
-          className="h-full w-full object-cover transition duration-300 group-hover:scale-110"
-        />
+    <Link to={`/category/${category.type}`} className="block">
+      <div className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+        <div className="relative h-48 overflow-hidden">
+          <img
+            src={category.image}
+            alt={category.name}
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-110"
+          />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 
-        <h3 className="absolute bottom-4 left-5 text-2xl font-bold text-white">
-          {category.name}
-        </h3>
+          <h3 className="absolute bottom-4 left-5 text-2xl font-bold text-white">
+            {category.name}
+          </h3>
+        </div>
+
+        <p className="p-5 text-sm text-slate-600">{category.description}</p>
       </div>
-
-      <p className="p-5 text-sm text-slate-600">{category.description}</p>
-    </div>
+    </Link>
   );
 };
 

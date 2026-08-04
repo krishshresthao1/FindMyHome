@@ -78,7 +78,7 @@ export const resendOtp = (email) =>
     },
   });
 
-  /* ===========================
+/* ===========================
    Favourite APIs
 =========================== */
 
@@ -97,3 +97,40 @@ export const toggleFavourite = (propertyId, token) => {
     },
   });
 };
+
+/* ===========================
+   Chat APIs
+=========================== */
+
+export const sendMessage = (data, token) => {
+  return api.post("/chat/send", data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getMessages = (userId, token) => {
+  return api.get(`/chat/messages/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const markMessagesSeen = (userId, token) => {
+  return api.put(`/chat/seen/${userId}`, null, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getConversations = (token) => {
+  return api.get("/chat/conversations", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+

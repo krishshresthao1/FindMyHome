@@ -6,6 +6,8 @@ import AppLayout from "../components/layouts/AppLayout/applayout";
 
 import Home from "../pages/Home";
 import Search from "../pages/Search";
+import PropertyCategory from "../pages/PropertyCategory";
+import Categories from "../pages/Categories";
 import PropertyDetails from "../pages/PropertyDetails";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
@@ -20,10 +22,11 @@ import VerifyEmail from "../pages/VerifyEmail";
 
 import ScrollToTop from "../components/common/ScrollToTop";
 
+import Messages from "../pages/Messages";
+
 const AppRoutes = () => {
   return (
     <BrowserRouter>
-    
       <ScrollToTop />
 
       <Routes>
@@ -42,16 +45,14 @@ const AppRoutes = () => {
         {/* Application pages */}
         <Route element={<AppLayout />}>
           <Route path="/search" element={<Search />} />
-
+          <Route path="/category/:type" element={<PropertyCategory />} />
+          <Route path="/categories" element={<Categories />} />
           <Route path="/property/:id" element={<PropertyDetails />} />
-
           <Route path="/map" element={<Map />} />
-
           <Route path="/saved" element={<Saved />} />
-
           <Route path="/profile" element={<Profile />} />
-
           <Route path="/add-property" element={<AddProperty />} />
+          <Route path="/messages" element={<Messages />} />
         </Route>
       </Routes>
       <ToastContainer

@@ -31,7 +31,8 @@ export const PropertyProvider = ({ children }) => {
 
       if (token) {
         const favouriteResponse = await getFavourites(token);
-        setFavourites(favouriteResponse.data.favourites || []);
+
+        setFavourites(favouriteResponse.data.map((property) => property._id));
       } else {
         setFavourites([]);
       }

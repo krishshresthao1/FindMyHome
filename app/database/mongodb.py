@@ -15,3 +15,5 @@ db = client["FindMyHome"]
 
 property_collection = db["properties"]
 users_collection = db["users"]
+
+chat_collection = db["chat"]

@@ -1,11 +1,16 @@
 import { Link } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
+import logo from "../../../assets/images/Logo.png";
 
 const Logo = () => {
   return (
-    <Link to="/" className="flex items-center gap-2 select-none">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 text-white shadow-md">
-        <FaHome className="text-xl" />
+    <Link to="/home" className="flex items-center gap-2 select-none">
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl">
+        <img
+          src={logo}
+          alt="FindMyHome"
+          className="h-12 w-auto object-contain"
+        />
       </div>
 
       <div className="leading-tight">
