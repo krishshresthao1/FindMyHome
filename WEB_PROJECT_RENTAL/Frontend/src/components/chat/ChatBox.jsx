@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
 import { Send, X } from "lucide-react";
 
-import { getMessages, sendMessage, markMessagesSeen } from "../../services/api";
+import {
+  getMessagesV2,
+  sendMessageV2,
+  markMessagesSeenV2,
+} from "../../services/api";
 
-const ChatBox = ({ receiverId, receiverName, propertyId, onClose }) => {
-
+const ChatBox = ({
+  conversationId,
+  receiverId,
+  receiverName,
+  propertyId,
+  onClose,
+}) => {
   console.log("CHATBOX NAME:", receiverName);
   const currentUser = JSON.parse(localStorage.getItem("user"));
   const [messages, setMessages] = useState([]);
@@ -14,7 +23,7 @@ const ChatBox = ({ receiverId, receiverName, propertyId, onClose }) => {
 
   const loadMessages = async () => {
     try {
-      const response = await getMessages(receiverId, token);
+      const response = await getMessagesV2(conversationId, token);
 
       setMessages(response.data);
     } catch (error) {
@@ -26,7 +35,7 @@ const ChatBox = ({ receiverId, receiverName, propertyId, onClose }) => {
     const openChat = async () => {
       await loadMessages();
 
-      await markMessagesSeen(receiverId, token);
+      await markMessagesSeenV2(conversationId, token);
     };
 
     openChat();

@@ -134,3 +134,54 @@ export const getConversations = (token) => {
   });
 };
 
+// ===========================
+// Chat V2 APIs
+// ===========================
+
+export const sendMessageV2 = (data, token) => {
+  return api.post("/chat-v2/send", data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getConversationsV2 = (token) => {
+  return api.get("/chat-v2/conversations", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const getMessagesV2 = (conversationId, token) => {
+  return api.get(`/chat-v2/messages/${conversationId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const markMessagesSeenV2 = (conversationId, token) => {
+  return api.put(`/chat-v2/seen/${conversationId}`, null, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const startConversationV2 = (data, token) => {
+  return api.post("/chat-v2/start", data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};
+
+export const sendPropertyMessageV2 = (data, token) => {
+  return axios.post("http://127.0.0.1:8000/chat-v2/send-property", data, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+};

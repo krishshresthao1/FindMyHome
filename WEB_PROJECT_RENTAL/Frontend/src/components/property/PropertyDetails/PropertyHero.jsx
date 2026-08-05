@@ -11,11 +11,15 @@ import {
   ChefHat,
   ChevronLeft,
   ChevronRight,
+  MessageCircle,
+  ArrowLeft,
 } from "lucide-react";
+
+import { useNavigate } from "react-router-dom";
 
 import { useLayout } from "../../../context/LayoutContext";
 
-const PropertyHero = ({ property }) => {
+const PropertyHero = ({ property, onChat }) => {
   const totalImages = property.images?.length || 0;
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -24,7 +28,9 @@ const PropertyHero = ({ property }) => {
   const [thumbnailStart, setThumbnailStart] = useState(0);
 
   const { setShowNavbar, setShowFooter } = useLayout();
-  
+
+  const navigate = useNavigate();
+
   const changeImage = (index) => {
     setCurrentImage(index);
 
@@ -51,6 +57,31 @@ const PropertyHero = ({ property }) => {
 
       <div className="col-span-1 lg:col-span-8">
         {/* Main Image */}
+        {/* Back Button */}
+        <button
+          onClick={() => navigate(-1)}
+          className="
+              absolute
+              left-5
+              top-25
+              z-20
+              flex
+              items-center
+              gap-2
+              rounded-xl
+              bg-blue-600
+              px-5
+              py-3
+              font-semibold
+              text-slate-100
+              shadow-lg
+              transition
+              hover:bg-blue-700
+              "
+        >
+          <ArrowLeft size={18} />
+          Back
+        </button>
 
         <div className="relative">
           <img
@@ -65,7 +96,7 @@ const PropertyHero = ({ property }) => {
               setShowNavbar(false);
               setShowFooter(false);
             }}
-            className="h-[520px] w-full cursor-pointer rounded-3xl object-cover transition hover:scale-[1.01]"
+            className="h-[540px] mt-4 w-full cursor-pointer rounded-3xl object-cover transition hover:scale-[1.01]"
           />
 
           {/* Main image arrows */}
@@ -140,11 +171,6 @@ const PropertyHero = ({ property }) => {
       {/* RIGHT SIDE */}
 
       <div className="col-span-1 lg:col-span-4">
-        <span className="flex w-fit items-center gap-2 rounded-full bg-green-100 px-4 py-2 font-semibold text-green-700">
-          <ShieldCheck size={18} />
-          Verified Owner
-        </span>
-
         <h1 className="mt-5 text-4xl font-bold text-slate-900">
           {property.title}
         </h1>
@@ -162,7 +188,7 @@ const PropertyHero = ({ property }) => {
 
         {/* BASIC INFO CARDS */}
 
-        <div className="mt-8 grid grid-cols-2 gap-5">
+        <div className="mt-6 grid grid-cols-2 gap-5">
           <div className="rounded-xl bg-slate-100 p-4">
             <BedDouble />
 
@@ -186,6 +212,67 @@ const PropertyHero = ({ property }) => {
 
             <p className="mt-2 font-semibold">{property.kitchens} Kitchen</p>
           </div>
+        </div>
+        {/* OWNER SECTION */}
+
+        <div className="mt-6 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+          <div className="flex items-center justify-between">
+            {/* Owner Info */}
+
+            <div className="flex items-center gap-4">
+              <div
+                className="
+                  flex
+                  h-12
+                  w-12
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-blue-100
+                  font-bold
+                  text-blue-600
+                  "
+              >
+                {property.owner_name?.charAt(0)}
+              </div>
+
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-slate-900">
+                    {property.owner_name}
+                  </h3>
+
+                  <ShieldCheck size={18} className="text-green-600" />
+                </div>
+
+                <p className="text-sm text-slate-500">Verified Owner</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Message Button */}
+
+          <button
+            onClick={onChat}
+            className="
+              mt-5
+              flex
+              w-full
+              items-center
+              justify-center
+              gap-2
+              rounded-xl
+              bg-blue-600
+              py-3
+              font-semibold
+              text-white
+              transition
+              hover:bg-blue-700
+              "
+          >
+            <MessageCircle size={18} />
+            Contact Owner
+          </button>
         </div>
       </div>
       {selectedImage !== null && (

@@ -35,6 +35,7 @@ Global Reset
 
 html {
   scroll-behavior: smooth;
+  scrollbar-width: none;
 }
 
 body {
@@ -42,6 +43,7 @@ body {
   padding: 0;
   background: var(--color-background);
   color: var(--color-text);
+  scrollbar-width: none;
   font-family:
     Inter,
     system-ui,
@@ -67,6 +69,7 @@ img {
 
 #root {
   min-height: 100vh;
+  scrollbar-width: none;
 }
 
 @keyframes fadeIn {
@@ -79,4 +82,21 @@ img {
     opacity: 1;
     transform: scale(1);
   }
+}
+
+@keyframes messageAppear {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+
+.animate-message {
+  animation: messageAppear 0.25s ease-out;
 }

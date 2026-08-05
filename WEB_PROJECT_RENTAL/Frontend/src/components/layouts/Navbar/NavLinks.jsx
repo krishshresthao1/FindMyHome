@@ -43,16 +43,16 @@ const NavLinks = () => {
       name: "Map",
       path: "/map",
     },
+    {
+      name: "Inbox",
+      path: "/messages",
+    },
 
     ...(user?.role === "owner"
       ? [
           {
             name: "Post Property",
             path: "/add-property",
-          },
-          {
-            name: "Messages",
-            path: "/messages",
           },
         ]
       : []),

@@ -4,8 +4,15 @@ from datetime import datetime
 
 from app.models.chat import ChatMessage
 from app.utils.dependencies import get_current_user
-from app.database.mongodb import chat_collection, users_collection
+from app.database.mongodb import (
+    conversation_collection,
+    message_collection,
+    users_collection,
+    property_collection,
+)
 
+from app.models.conversation import Conversation
+from app.models.message import Message
 
 router = APIRouter(
     prefix="/chat",
@@ -19,21 +26,80 @@ def send_message(
     chat: ChatMessage,
     current_user=Depends(get_current_user)
 ):
-    message = {
-    "sender_id": str(current_user["_id"]),
-    "receiver_id": chat.receiver_id,
-    "property_id": chat.property_id,
-    "message": chat.message,
-    "created_at": datetime.utcnow(),
-    "seen": False,
-}
 
-    result = chat_collection.insert_one(message)
+    sender_id = str(current_user["_id"])
+    receiver_id = chat.receiver_id
+
+    # Find property
+    property = property_collection.find_one(
+        {
+            "_id": ObjectId(chat.property_id)
+        }
+    )
+
+    if not property:
+        return {
+            "message": "Property not found"
+        }
+
+    owner_id = property["owner_id"]
+    tenant_id = sender_id if sender_id != owner_id else receiver_id
+
+    # Check if conversation already exists
+    conversation = conversation_collection.find_one(
+        {
+            "property_id": chat.property_id,
+            "owner_id": owner_id,
+            "tenant_id": tenant_id,
+        }
+    )
+
+    # Create conversation if it doesn't exist
+    if not conversation:
+
+        conversation = {
+            "property_id": chat.property_id,
+            "owner_id": owner_id,
+            "tenant_id": tenant_id,
+            "last_message": chat.message,
+            "last_message_time": datetime.utcnow(),
+            "created_at": datetime.utcnow(),
+        }
+
+        conversation_id = conversation_collection.insert_one(
+            conversation
+        ).inserted_id
+
+    else:
+
+        conversation_id = conversation["_id"]
+
+        conversation_collection.update_one(
+            {
+                "_id": conversation_id
+            },
+            {
+                "$set": {
+                    "last_message": chat.message,
+                    "last_message_time": datetime.utcnow(),
+                }
+            }
+        )
+
+    # Save message
+    message = {
+        "conversation_id": str(conversation_id),
+        "sender_id": sender_id,
+        "message": chat.message,
+        "seen": False,
+        "created_at": datetime.utcnow(),
+    }
+
+    result = message_collection.insert_one(message)
 
     message["_id"] = str(result.inserted_id)
 
     return message
-
 
 # Get chat history between two users
 @router.get("/messages/{user_id}")

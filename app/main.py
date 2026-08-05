@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from app.routes.property import router as property_router
 import app.database.mongodb
-from app.routes import auth,chat
+from app.routes import auth, chat, chat_v2
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.routes import favourites
@@ -38,3 +38,5 @@ app.include_router(favourites.router)
 app.include_router(user_router)
 
 app.include_router(chat.router)
+
+app.include_router(chat_v2.router)

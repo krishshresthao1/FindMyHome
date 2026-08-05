@@ -17,3 +17,6 @@ property_collection = db["properties"]
 users_collection = db["users"]
 
 chat_collection = db["chat"]
+
+conversation_collection = db["conversations"]
+message_collection = db["messages"]

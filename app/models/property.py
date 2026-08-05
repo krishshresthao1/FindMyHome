@@ -1,6 +1,5 @@
-from pydantic import BaseModel
 from typing import List, Optional
-
+from pydantic import BaseModel
 
 class Property(BaseModel):
     # Basic Information
@@ -39,5 +38,7 @@ class Property(BaseModel):
     gym: bool = False
     atm: bool = False
 
-    # Owner Information
-    owner_email: Optional[str] = None
+# Owner Information
+owner_id: Optional[str] = None
+owner_name: Optional[str] = None
+owner_email: Optional[str] = None

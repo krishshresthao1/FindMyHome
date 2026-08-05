@@ -8,11 +8,15 @@ import NearbyPlaces from "../components/property/PropertyDetails/NearbyPlaces";
 import PropertyLocation from "../components/property/PropertyDetails/PropertyLocation/PropertyLocation";
 import OwnerCard from "../components/property/OwnerCard/OwnerCard";
 
-import { getPropertyById } from "../services/api";
-
 import { useNavigate } from "react-router-dom";
 
-import ChatBox from "../components/Chat/ChatBox";
+
+import {
+  getPropertyById,
+  startConversationV2,
+  sendPropertyMessageV2,
+  sendMessageV2,
+} from "../services/api";
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -21,7 +25,54 @@ const PropertyDetails = () => {
 
   const navigate = useNavigate();
 
-  const [showChat, setShowChat] = useState(false);
+const handleChatOwner = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    // Create conversation
+    const response = await startConversationV2(
+      {
+        property_id: property._id,
+      },
+      token,
+    );
+
+    const conversationId = response.data.conversation_id;
+
+    const isNew = response.data.is_new;
+
+    // Send property card only for new conversation
+    if (isNew) {
+      // Send property card
+      await sendPropertyMessageV2(
+        {
+          property_id: property._id,
+          conversation_id: conversationId,
+        },
+        token,
+      );
+
+      // Send initial text message
+      await sendMessageV2(
+        {
+          receiver_id: property.owner_id,
+          property_id: property._id,
+          message: `Hello, I am interested in your property "${property.title}". Is it still available? I would like to know more details.`,
+        },
+        token,
+      );
+    }
+
+    // Open Messages page
+    navigate("/messages", {
+      state: {
+        conversationId,
+      },
+    });
+  } catch (error) {
+    console.error("Failed to start conversation:", error);
+  }
+};
 
   useEffect(() => {
     const fetchProperty = async () => {
@@ -44,33 +95,9 @@ const PropertyDetails = () => {
   return (
     <section className="bg-slate-50 py-10">
       <div className="mx-auto max-w-7xl px-6">
-        <button
-          onClick={() => navigate(-1)}
-          className="group mb-8 flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 font-semibold !text-white shadow-md transition-all duration-300 hover:-translate-x-1 hover:bg-blue-700 hover:shadow-lg"
-        >
-          <ArrowLeft
-            size={20}
-            className="transition-transform duration-300 group-hover:-translate-x-1"
-          />
-          Back
-        </button>
 
-        <button
-          onClick={() => setShowChat(true)}
-          className="
-          rounded-xl
-          bg-blue-600
-          px-6
-          py-3
-          font-semibold
-          text-white
-          hover:bg-blue-700
-          "
-        >
-          Chat with Owner
-        </button>
 
-        <PropertyHero property={property} />
+        <PropertyHero property={property} onChat={handleChatOwner} />
 
         <PropertyInformation property={property} />
 
@@ -78,16 +105,6 @@ const PropertyDetails = () => {
 
         <PropertyLocation property={property} />
 
-        <OwnerCard property={property} />
-
-        {showChat && (
-          <ChatBox
-            receiverId={property.owner_id}
-            receiverName={property.owner_name}
-            propertyId={property._id}
-            onClose={() => setShowChat(false)}
-          />
-        )}
       </div>
     </section>
   );
