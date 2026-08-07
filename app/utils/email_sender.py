@@ -25,6 +25,7 @@ def send_verification_email(email: str, otp: str):
         )
 
         print("RESEND RESPONSE:", response)
+        print("RESEND KEY:", resend.api_key[:10] if resend.api_key else "MISSING")
 
     except Exception as e:
         print("RESEND FAILED:", repr(e))

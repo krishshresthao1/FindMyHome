@@ -51,8 +51,8 @@ const PropertyCard = ({ property }) => {
       <div className="relative overflow-hidden">
         <img
           src={
-            totalImages > 0
-              ? `http://127.0.0.1:8000${property.images[currentImage]}`
+            property.images?.length
+              ? `${import.meta.env.VITE_API_URL}${property.images[currentImage]}`
               : "https://via.placeholder.com/500"
           }
           alt={property.title}
