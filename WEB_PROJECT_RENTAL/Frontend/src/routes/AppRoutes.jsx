@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "../components/layouts/MainLayout/MainLayout";
 import AuthLayout from "../components/layouts/AuthLayout/AuthLayout";
-import AppLayout from "../components/layouts/AppLayout/applayout";
+import AppLayout from "../components/layouts/AppLayout/AppLayout";
 
 import Home from "../pages/Home";
 import Search from "../pages/Search";
