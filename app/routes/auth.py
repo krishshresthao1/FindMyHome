@@ -20,9 +20,6 @@ from app.utils.email_sender import send_verification_email
 
 from app.schemas.verify_email import VerifyEmailSchema
 
-from datetime import datetime, timedelta
-import random
-from app.utils.email_sender import send_verification_email
 
 
 router = APIRouter(
@@ -159,7 +156,14 @@ def resend_otp(email: str):
         }
     )
 
-    send_verification_email(email, otp)
+    try:
+        send_verification_email(email, otp)
+    except Exception as e:
+        print("Resend email failed:", e)
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to send verification email"
+        )
 
     return {
         "message": "Verification code sent successfully."
