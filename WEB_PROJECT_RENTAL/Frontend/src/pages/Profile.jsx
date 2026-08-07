@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import ProfileHeader from "../components/Profile/ProfileHeader";
-import PersonalInfoCard from "../components/Profile/PersonalInfoCard";
-import AccountInfoCard from "../components/Profile/AccountInfoCard";
-import ActivityCard from "../components/Profile/ActivityCard";
-import QuickActionsCard from "../components/Profile/QuickActionsCard";
-import DangerZoneCard from "../components/Profile/DangerZoneCard";
+import ProfileHeader from "../components/profile/ProfileHeader";
+import PersonalInfoCard from "../components/profile/PersonalInfoCard";
+import AccountInfoCard from "../components/profile/AccountInfoCard";
+import ActivityCard from "../components/profile/ActivityCard";
+import QuickActionsCard from "../components/profile/QuickActionsCard";
+import DangerZoneCard from "../components/profile/DangerZoneCard";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
