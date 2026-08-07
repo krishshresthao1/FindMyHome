@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { MapPin, Wallet, ArrowRight } from "lucide-react";
 
 const PropertyMessageCard = ({ property }) => {
+  if (!property) return null;
   const navigate = useNavigate();
 
   const handleViewProperty = () => {

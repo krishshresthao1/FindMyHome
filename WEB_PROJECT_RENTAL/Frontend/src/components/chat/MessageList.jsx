@@ -1,10 +1,13 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import MessageBubble from "./MessageBubble";
 
 const MessageList = ({ messages }) => {
   const bottomRef = useRef(null);
 
   const currentUser = JSON.parse(localStorage.getItem("user"));
+
+  const [selectedMessage, setSelectedMessage] = useState(null);
+  
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({
@@ -13,7 +16,7 @@ const MessageList = ({ messages }) => {
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto bg-slate-50 p-5">
+    <div className="flex flex-1 flex-col items-start overflow-y-auto p-4">
       {messages?.map((msg) => (
         <MessageBubble
           key={msg._id}
@@ -21,6 +24,10 @@ const MessageList = ({ messages }) => {
           isMine={
             msg.sender_id === currentUser?._id ||
             msg.sender_id === currentUser?.id
+          }
+          selected={selectedMessage === msg._id}
+          onClick={() =>
+            setSelectedMessage(selectedMessage === msg._id ? null : msg._id)
           }
         />
       ))}

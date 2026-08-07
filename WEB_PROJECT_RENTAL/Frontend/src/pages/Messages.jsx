@@ -105,7 +105,10 @@ const Messages = () => {
 
       {/* RIGHT SIDE */}
 
-      <ChatWindow selectedUser={selectedUser} />
+      <ChatWindow
+        selectedUser={selectedUser}
+        onMessageSent={fetchConversations}
+      />
     </div>
   );
 };

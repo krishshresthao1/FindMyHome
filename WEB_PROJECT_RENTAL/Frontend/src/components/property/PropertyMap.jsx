@@ -320,7 +320,9 @@ const PropertyMap = ({ property }) => {
               className="flex items-center justify-center gap-3 rounded-2xl bg-blue-600 px-5 py-4 font-semibold text-white transition hover:-translate-y-1 hover:bg-blue-700"
             >
               <Car size={22} />
-              Drive
+              Drive /
+              <Bike size={22} />
+              Bike
             </button>
 
             <button
@@ -328,7 +330,7 @@ const PropertyMap = ({ property }) => {
               className="flex items-center justify-center gap-3 rounded-2xl bg-green-600 px-5 py-4 font-semibold text-white transition hover:-translate-y-1 hover:bg-green-700"
             >
               <Bike size={22} />
-              Bike
+              Cycling
             </button>
 
             <button
@@ -411,14 +413,14 @@ const PropertyMap = ({ property }) => {
                   {routeInfo.mode === "driving-car" && (
                     <>
                       <Car size={24} className="text-blue-600" />
-                      Driving
+                      Driving/Riding
                     </>
                   )}
 
                   {routeInfo.mode === "cycling-regular" && (
                     <>
                       <Bike size={24} className="text-green-600" />
-                      Riding
+                      Cycling
                     </>
                   )}
 

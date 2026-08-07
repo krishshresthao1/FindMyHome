@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from bson import ObjectId
-from datetime import datetime
+from datetime import datetime, UTC
 
 from app.models.chat import (
     ChatMessage,
@@ -16,6 +16,7 @@ from app.database.mongodb import (
 )
 
 from fastapi import HTTPException
+
 
 router = APIRouter(
     prefix="/chat-v2",
@@ -36,6 +37,7 @@ def start_conversation(
         }
     )
 
+    
     if property_doc is None:
         raise HTTPException(
             status_code=404,
@@ -69,8 +71,8 @@ def start_conversation(
         "owner_id": owner_id,
         "tenant_id": tenant_id,
         "last_message": "",
-        "last_message_time": datetime.utcnow(),
-        "created_at": datetime.utcnow(),
+        "last_message_time":datetime.now(UTC),
+        "created_at":datetime.now(UTC),
     }
 
 
@@ -131,8 +133,8 @@ def send_message(
             "owner_id": owner_id,
             "tenant_id": tenant_id,
             "last_message": chat.message,
-            "last_message_time": datetime.utcnow(),
-            "created_at": datetime.utcnow(),
+            "last_message_time":datetime.now(UTC),
+            "created_at": datetime.now(UTC),
         }
 
         conversation_result = conversation_collection.insert_one(
@@ -152,7 +154,7 @@ def send_message(
             {
                 "$set": {
                     "last_message": chat.message,
-                    "last_message_time": datetime.utcnow()
+                    "last_message_time":datetime.now(UTC)
                 }
             }
         )
@@ -168,7 +170,7 @@ def send_message(
 
         "seen": False,
 
-        "created_at": datetime.utcnow(),
+        "created_at":datetime.now(UTC),
     }
 
     result = message_collection.insert_one(message)
@@ -230,7 +232,7 @@ def send_property_message(
 
         "seen": False,
 
-        "created_at": datetime.utcnow()
+        "created_at":datetime.now(UTC)
 
     }
 
@@ -375,7 +377,14 @@ def get_conversations(
             {
                 "_id": ObjectId(conversation["property_id"])
             }
-        )
+            )
+        last_message_doc = message_collection.find_one(
+            {
+                "conversation_id": str(conversation["_id"])
+            },
+            sort=[("created_at", -1)]
+    
+    )
 
         results.append({
             "conversation_id": str(conversation["_id"]),
@@ -384,6 +393,8 @@ def get_conversations(
             "property_id": conversation["property_id"],
             "property_title": property_doc["title"] if property_doc else "Property",
             "last_message": conversation["last_message"],
+            "last_sender": last_message_doc["sender_id"] if last_message_doc else None,
+            "last_seen": last_message_doc["seen"] if last_message_doc else False,
             "time": conversation["last_message_time"],
         })
 

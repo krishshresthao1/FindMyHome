@@ -37,6 +37,8 @@ def create_access_token(data: dict):
         algorithm=ALGORITHM
     )
 
+    print(encoded_jwt)
+
     return encoded_jwt
 
 
@@ -55,3 +57,4 @@ def verify_token(token: str):
     except JWTError:
 
         return None
+

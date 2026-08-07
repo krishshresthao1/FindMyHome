@@ -2,7 +2,12 @@ import { useState } from "react";
 import { SendHorizontal } from "lucide-react";
 import { sendMessageV2 } from "../../services/api";
 
-const MessageInput = ({ selectedUser, messages, setMessages }) => {
+const MessageInput = ({
+  selectedUser,
+  messages,
+  setMessages,
+  onMessageSent,
+}) => {
   const [text, setText] = useState("");
 
   const token = localStorage.getItem("token");
@@ -28,6 +33,9 @@ const MessageInput = ({ selectedUser, messages, setMessages }) => {
       );
 
       setMessages((prev) => [...prev, response.data.message]);
+      if (onMessageSent) {
+        await onMessageSent();
+      }
     } catch (err) {
       console.error(err);
       setText(messageText);

@@ -18,7 +18,7 @@ const Logo = () => {
           Find My Home
         </h1>
 
-        <p className="text-xs text-slate-500">Kathmandu Rentals</p>
+        <p className="text-xs text-slate-500">Nepal Rentals</p>
       </div>
     </Link>
   );

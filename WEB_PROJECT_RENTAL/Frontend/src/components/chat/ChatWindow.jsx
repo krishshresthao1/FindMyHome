@@ -7,12 +7,11 @@ import MessageInput from "./MessageInput";
 
 import { getMessagesV2, markMessagesSeenV2 } from "../../services/api";
 
-const ChatWindow = ({ selectedUser }) => {
+const ChatWindow = ({ selectedUser, onMessageSent }) => {
   const [messages, setMessages] = useState([]);
 
   const token = localStorage.getItem("token");
 
- 
   const loadMessages = async () => {
     if (!selectedUser?.conversation_id) return;
 
@@ -22,6 +21,9 @@ const ChatWindow = ({ selectedUser }) => {
       setMessages(response.data);
 
       await markMessagesSeenV2(selectedUser.conversation_id, token);
+      if (onMessageSent) {
+        await onMessageSent();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -59,8 +61,8 @@ const ChatWindow = ({ selectedUser }) => {
         selectedUser={selectedUser}
         messages={messages}
         setMessages={setMessages}
+        onMessageSent={onMessageSent}
       />
-      
     </div>
   );
 };
