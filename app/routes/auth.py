@@ -24,6 +24,7 @@ from datetime import datetime, timedelta
 import random
 from app.utils.email_sender import send_verification_email
 
+
 router = APIRouter(
     prefix="/auth",
     tags=["Authentication"]
@@ -58,10 +59,13 @@ def register(user: User):
 
     users_collection.insert_one(user_data)
 
-    send_verification_email(
-    user.email,
-    otp
-    )
+    try:
+        send_verification_email(
+            user.email,
+            otp
+        )
+    except Exception as e:
+        print("Email sending failed:", e)
 
     return {
     "message": "Verify your email. Verification code sent to your email."
