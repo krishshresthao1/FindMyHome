@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://127.0.0.1:8000",
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 export default api;
@@ -179,7 +179,7 @@ export const startConversationV2 = (data, token) => {
 };
 
 export const sendPropertyMessageV2 = (data, token) => {
-  return axios.post("http://127.0.0.1:8000/chat-v2/send-property", data, {
+  return api.post("/chat-v2/send-property", data, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
