@@ -6,6 +6,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.routes import favourites
 from app.routes.user import router as user_router
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = FastAPI(
     title="FindMyHome API",
@@ -19,14 +23,13 @@ app.mount(
 )
 
 app.include_router(property_router)
-
-
 app.include_router(auth.router)
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
+        os.getenv("FRONTEND_URL"),
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -34,9 +37,6 @@ app.add_middleware(
 )
 
 app.include_router(favourites.router)
-
 app.include_router(user_router)
-
 app.include_router(chat.router)
-
 app.include_router(chat_v2.router)
